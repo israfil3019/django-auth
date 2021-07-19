@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import authenticate, login
 
 # Create your views here.
@@ -37,3 +37,18 @@ def register(request):
     }
     
     return render(request, "registration/register.html", context)
+
+
+def password_change(request):
+    
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            
+    else:
+        form = UserChangeForm()
+    context = {
+        'form': form
+    }
+    return render(request, "registration/password_change.html", context)
